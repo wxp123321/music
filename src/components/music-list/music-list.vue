@@ -4,10 +4,11 @@
       <i class="icon-back"></i>
     </div>
     <h1 class="title" v-html="title"></h1>
-    <div class="bg-image" :style="bgStyle">
+    <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="filter"></div>
     </div>
-    <scroll :data="songs" class="list" ref="list">
+    <div class="bg-layer" ref="layer"></div>
+    <scroll @scroll="scroll" :data="songs" :probe-type="probeType" :listen-scroll="listenScroll" class="list" ref="list">
       <div class="song-list-wrapper">
         <song-list :songs="songs"></song-list>
       </div>
@@ -34,13 +35,34 @@
         default: ''
       }
     },
+    data() {
+      return {
+        scrollY: 0
+      }
+    },
     computed: {
       bgStyle() {
         return `background-image:url(${this.bgImage})`
       }
     },
     mounted() {
-      this.$refs.list
+      console.log('a')
+      this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
+    },
+    created() {
+      this.probeType = 3
+      this.listenScroll = true
+    },
+    methods: {
+      scroll(pos) {
+        this.scrollY = pos.y
+      }
+    },
+    watch: {
+      scrollY(newY) {
+        this.$refs.layer.style['transform'] = `translate3d(0,${newY}px,0)`
+        this.$refs.layer.style['webkitTransform'] = `translate3d(0,${newY}px,0)`
+      }
     },
     components: {
       Scroll,
