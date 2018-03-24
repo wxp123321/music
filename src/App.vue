@@ -1,28 +1,27 @@
 <template>
-  <div id="app">
+  <div id="app" @touchmove.prevent>
     <m-header></m-header>
     <tab></tab>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    <player></player>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import MHeader from './components/m-header/m-header'
-  import Tab from './components/tab/tab'
-
+  import MHeader from 'components/m-header/m-header'
+  import Tab from 'components/tab/tab'
+  import Player from 'components/player/player'
 
   export default {
-    name: 'App',
     components: {
       MHeader,
-      Tab
+      Tab,
+      Player
     }
   }
 </script>
 
-<style lang="stylus" type="text/stylus" rel="stylesheet/stylus">
-  @import "./common/stylus/variable.styl"
-
-  #app
-    color : $color-theme
+<style scoped lang="stylus" rel="stylesheet/stylus">
 </style>
